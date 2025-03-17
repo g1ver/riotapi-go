@@ -19,10 +19,10 @@ func (c *Client) GetClashPlayersByPUUID(puuid string) ([]models.Player, error) {
 }
 
 // Get team by ID.
-func (c *Client) GetClashTeamByID(teamId string) (*models.Team, error) {
+func (c *Client) GetClashTeamByID(teamId string) (*models.ClashTeam, error) {
 	url := fmt.Sprintf("%s/lol/clash/v1/teams/%s", c.baseUrl, teamId)
 
-	var t models.Team
+	var t models.ClashTeam
 	if err := c.Get(url, &t); err != nil {
 		return nil, fmt.Errorf("failed to get team by id: %w", err)
 	}

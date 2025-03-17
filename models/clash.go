@@ -8,7 +8,7 @@ type Player struct {
 	Role       string `json:"role"`
 }
 
-type Team struct {
+type ClashTeam struct {
 	ID           string   `json:"id"`
 	TournamentID int      `json:"tournamentId"`
 	Name         string   `json:"name"`
