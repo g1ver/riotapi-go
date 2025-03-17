@@ -26,11 +26,31 @@ var regionBaseURLs = map[string]string{
 	"vn2":  "https://vn2.api.riotgames.com",
 }
 
+// The AMERICAS routing value serves NA, BR, LAN and LAS. The ASIA routing value serves KR and JP. The EUROPE routing value serves EUNE, EUW, ME1, TR and RU. The SEA routing value serves OCE, SG2, TW2 and VN2.
+var routingServers = map[string]string{
+	"na1":  "americas",
+	"br1":  "americas",
+	"la1":  "americas",
+	"la2":  "americas",
+	"eun1": "europe",
+	"euw1": "europe",
+	"me1":  "europe",
+	"tr1":  "europe",
+	"ru":   "europe",
+	"kr":   "asia",
+	"jp1":  "asia",
+	"oc1":  "sea",
+	"sg2":  "sea",
+	"tw2":  "sea",
+	"vn2":  "sea",
+}
+
 type Client struct {
-	httpClient *http.Client
-	apiKey     string
-	region     string
-	baseUrl    string
+	httpClient    *http.Client
+	apiKey        string
+	region        string
+	routingServer string
+	baseUrl       string
 }
 
 func NewClient(apiKey string, region string) (*Client, error) {
@@ -38,13 +58,18 @@ func NewClient(apiKey string, region string) (*Client, error) {
 		return nil, errors.New("Invalid region.")
 	}
 
+	if _, exists := routingServers[region]; !exists {
+		return nil, errors.New("Invalid region.")
+	}
+
 	return &Client{
 		httpClient: &http.Client{
 			Timeout: 10 * time.Second,
 		},
-		apiKey:  apiKey,
-		region:  region,
-		baseUrl: regionBaseURLs[region],
+		apiKey:        apiKey,
+		region:        region,
+		routingServer: routingServers[region],
+		baseUrl:       regionBaseURLs[region],
 	}, nil
 }
 
