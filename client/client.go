@@ -28,29 +28,29 @@ var regionBaseURLs = map[string]string{
 
 // The AMERICAS routing value serves NA, BR, LAN and LAS. The ASIA routing value serves KR and JP. The EUROPE routing value serves EUNE, EUW, ME1, TR and RU. The SEA routing value serves OCE, SG2, TW2 and VN2.
 var routingServers = map[string]string{
-	"na1":  "americas",
-	"br1":  "americas",
-	"la1":  "americas",
-	"la2":  "americas",
-	"eun1": "europe",
-	"euw1": "europe",
-	"me1":  "europe",
-	"tr1":  "europe",
-	"ru":   "europe",
-	"kr":   "asia",
-	"jp1":  "asia",
-	"oc1":  "sea",
-	"sg2":  "sea",
-	"tw2":  "sea",
-	"vn2":  "sea",
+	"na1":  "https://americas.api.riotgames.com",
+	"br1":  "https://americas.api.riotgames.com",
+	"la1":  "https://americas.api.riotgames.com",
+	"la2":  "https://americas.api.riotgames.com",
+	"eun1": "https://europe.api.riotgames.com",
+	"euw1": "https://europe.api.riotgames.com",
+	"me1":  "https://europe.api.riotgames.com",
+	"tr1":  "https://europe.api.riotgames.com",
+	"ru":   "https://europe.api.riotgames.com",
+	"kr":   "https://asia.api.riotgames.com",
+	"jp1":  "https://asia.api.riotgames.com",
+	"oc1":  "https://sea.api.riotgames.com",
+	"sg2":  "https://sea.api.riotgames.com",
+	"tw2":  "https://sea.api.riotgames.com",
+	"vn2":  "https://sea.api.riotgames.com",
 }
 
 type Client struct {
-	httpClient    *http.Client
-	apiKey        string
-	region        string
-	routingServer string
-	baseUrl       string
+	httpClient       *http.Client
+	apiKey           string
+	region           string
+	routingServerUrl string
+	baseUrl          string
 }
 
 func NewClient(apiKey string, region string) (*Client, error) {
@@ -66,10 +66,10 @@ func NewClient(apiKey string, region string) (*Client, error) {
 		httpClient: &http.Client{
 			Timeout: 10 * time.Second,
 		},
-		apiKey:        apiKey,
-		region:        region,
-		routingServer: routingServers[region],
-		baseUrl:       regionBaseURLs[region],
+		apiKey:           apiKey,
+		region:           region,
+		routingServerUrl: routingServers[region],
+		baseUrl:          regionBaseURLs[region],
 	}, nil
 }
 
