@@ -24,7 +24,7 @@ func (c *Client) GetAllLeagueEntriesByPUUID(puuid string) ([]models.LeagueEntry,
 
 	var le []models.LeagueEntry
 	if err := c.Get(url, &le); err != nil {
-		return nil, fmt.Errorf("failed to get challenger league by queue: %w", err)
+		return nil, fmt.Errorf("failed to get all league entries by puuid: %w", err)
 	}
 
 	return le, nil
@@ -36,7 +36,7 @@ func (c *Client) GetAllLeagueEntriesBySummonerID(summonerID string) ([]models.Le
 
 	var le []models.LeagueEntry
 	if err := c.Get(url, &le); err != nil {
-		return nil, fmt.Errorf("failed to get challenger league by queue: %w", err)
+		return nil, fmt.Errorf("failed to get all league entries by summoner id: %w", err)
 	}
 
 	return le, nil
@@ -48,7 +48,7 @@ func (c *Client) GetAllLeagueEntries(queue string, tier string, division string,
 
 	var les []models.LeagueEntry
 	if err := c.Get(url, &les); err != nil {
-		return nil, fmt.Errorf("failed to get league entries: %w", err)
+		return nil, fmt.Errorf("failed to get all league entries: %w", err)
 	}
 
 	return les, nil
