@@ -43,12 +43,34 @@ func (c *Client) GetMatchIDsByPUUID(puuid string, params models.GetMatchIDsByPUU
 	}
 	u.RawQuery = q.Encode()
 
-	fmt.Println(u.String())
-
 	var matchIDs []string
 	if err := c.Get(u.String(), &matchIDs); err != nil {
 		return nil, fmt.Errorf("failed to get match IDs: %w", err)
 	}
 
 	return matchIDs, nil
+}
+
+// Get a match by match id.
+func (c *Client) GetMatchByMatchID(matchId string) (*models.Match, error) {
+	u := fmt.Sprintf("%s/lol/match/v5/matches/%s", c.routingServerUrl, matchId)
+
+	var match models.Match
+	if err := c.Get(u, &match); err != nil {
+		return nil, fmt.Errorf("failed to get match by ID: %w", err)
+	}
+
+	return &match, nil
+}
+
+// Get a match timeline by match id
+func (c *Client) GetMatchTimelineByMatchID(matchId string) (*models.Timeline, error) {
+	u := fmt.Sprintf("%s/lol/match/v5/matches/%s/timeline", c.routingServerUrl, matchId)
+
+	var mtl models.Timeline
+	if err := c.Get(u, &mtl); err != nil {
+		return nil, fmt.Errorf("failed to get match timeline by ID: %w", err)
+	}
+
+	return &mtl, nil
 }

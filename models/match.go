@@ -181,10 +181,10 @@ type Challenges struct {
 	AssistStreakCount                         int     `json:"12AssistStreakCount"`
 	BaronBuffGoldAdvantageOverThreshold       int     `json:"baronBuffGoldAdvantageOverThreshold"`
 	ControlWardTimeCoverageInRiverOrEnemyHalf float64 `json:"controlWardTimeCoverageInRiverOrEnemyHalf"`
-	EarliestBaron                             int     `json:"earliestBaron"`
-	EarliestDragonTakedown                    int     `json:"earliestDragonTakedown"`
-	EarliestElderDragon                       int     `json:"earliestElderDragon"`
-	EarlyLaningPhaseGoldExpAdvantage          int     `json:"earlyLaningPhaseGoldExpAdvantage"`
+	EarliestBaron                             float64 `json:"earliestBaron"`
+	EarliestDragonTakedown                    float64 `json:"earliestDragonTakedown"`
+	EarliestElderDragon                       float64 `json:"earliestElderDragon"`
+	EarlyLaningPhaseGoldExpAdvantage          float64 `json:"earlyLaningPhaseGoldExpAdvantage"`
 	FasterSupportQuestCompletion              int     `json:"fasterSupportQuestCompletion"`
 	FastestLegendary                          int     `json:"fastestLegendary"`
 	HadAfkTeammate                            int     `json:"hadAfkTeammate"`
@@ -203,7 +203,7 @@ type Challenges struct {
 	SoloTurretsLategame                       int     `json:"soloTurretsLategame"`
 	TakedownsFirst25Minutes                   int     `json:"takedownsFirst25Minutes"`
 	TeleportTakedowns                         int     `json:"teleportTakedowns"`
-	ThirdInhibitorDestroyedTime               int     `json:"thirdInhibitorDestroyedTime"`
+	ThirdInhibitorDestroyedTime               float64 `json:"thirdInhibitorDestroyedTime"`
 	ThreeWardsOneSweeperCount                 int     `json:"threeWardsOneSweeperCount"`
 	VisionScoreAdvantageLaneOpponent          float64 `json:"visionScoreAdvantageLaneOpponent"`
 	InfernalScalePickup                       int     `json:"InfernalScalePickup"`
@@ -214,7 +214,7 @@ type Challenges struct {
 	AlliedJungleMonsterKills                  float64 `json:"alliedJungleMonsterKills"`
 	BaronTakedowns                            int     `json:"baronTakedowns"`
 	BlastConeOppositeOpponentCount            int     `json:"blastConeOppositeOpponentCount"`
-	BountyGold                                int     `json:"bountyGold"`
+	BountyGold                                float64 `json:"bountyGold"`
 	BuffsStolen                               int     `json:"buffsStolen"`
 	CompleteSupportQuestInTime                int     `json:"completeSupportQuestInTime"`
 	ControlWardsPlaced                        int     `json:"controlWardsPlaced"`
@@ -395,4 +395,103 @@ type Objective struct {
 type Match struct {
 	Metadata Metadata `json:"metadata"`
 	Info     Info     `json:"info"`
+}
+
+type MetadataTimeLine struct {
+	DataVersion  string   `json:"dataVersion"`
+	MatchID      string   `json:"matchId"`
+	Participants []string `json:"participants"`
+}
+
+type InfoTimeLine struct {
+	EndOfGameResult string                `json:"endOfGameResult"`
+	FrameInterval   int64                 `json:"frameInterval"`
+	GameID          int64                 `json:"gameId"`
+	Participants    []ParticipantTimeLine `json:"participants"`
+	Frames          []FramesTimeLine      `json:"frames"`
+}
+
+type ParticipantTimeLine struct {
+	ParticipantID int    `json:"participantId"`
+	PUUID         string `json:"puuid"`
+}
+
+type FramesTimeLine struct {
+	Events            []EventsTimeLine            `json:"events"`
+	ParticipantFrames map[string]ParticipantFrame `json:"participantFrames"`
+	Timestamp         int                         `json:"timestamp"`
+}
+
+type EventsTimeLine struct {
+	Timestamp     int64  `json:"timestamp"`
+	RealTimestamp int64  `json:"realTimestamp"`
+	Type          string `json:"type"`
+}
+
+type ParticipantFrame struct {
+	ChampionStats            ChampionStats `json:"championStats"`
+	CurrentGold              int           `json:"currentGold"`
+	DamageStats              DamageStats   `json:"damageStats"`
+	GoldPerSecond            int           `json:"goldPerSecond"`
+	JungleMinionsKilled      int           `json:"jungleMinionsKilled"`
+	Level                    int           `json:"level"`
+	MinionsKilled            int           `json:"minionsKilled"`
+	ParticipantID            int           `json:"participantId"`
+	Position                 Position      `json:"position"`
+	TimeEnemySpentControlled int           `json:"timeEnemySpentControlled"`
+	TotalGold                int           `json:"totalGold"`
+	XP                       int           `json:"xp"`
+}
+
+type ChampionStats struct {
+	AbilityHaste         int `json:"abilityHaste"`
+	AbilityPower         int `json:"abilityPower"`
+	Armor                int `json:"armor"`
+	ArmorPen             int `json:"armorPen"`
+	ArmorPenPercent      int `json:"armorPenPercent"`
+	AttackDamage         int `json:"attackDamage"`
+	AttackSpeed          int `json:"attackSpeed"`
+	BonusArmorPenPercent int `json:"bonusArmorPenPercent"`
+	BonusMagicPenPercent int `json:"bonusMagicPenPercent"`
+	CCReduction          int `json:"ccReduction"`
+	CooldownReduction    int `json:"cooldownReduction"`
+	Health               int `json:"health"`
+	HealthMax            int `json:"healthMax"`
+	HealthRegen          int `json:"healthRegen"`
+	Lifesteal            int `json:"lifesteal"`
+	MagicPen             int `json:"magicPen"`
+	MagicPenPercent      int `json:"magicPenPercent"`
+	MagicResist          int `json:"magicResist"`
+	MovementSpeed        int `json:"movementSpeed"`
+	Omnivamp             int `json:"omnivamp"`
+	PhysicalVamp         int `json:"physicalVamp"`
+	Power                int `json:"power"`
+	PowerMax             int `json:"powerMax"`
+	PowerRegen           int `json:"powerRegen"`
+	SpellVamp            int `json:"spellVamp"`
+}
+
+type DamageStats struct {
+	MagicDamageDone               int `json:"magicDamageDone"`
+	MagicDamageDoneToChampions    int `json:"magicDamageDoneToChampions"`
+	MagicDamageTaken              int `json:"magicDamageTaken"`
+	PhysicalDamageDone            int `json:"physicalDamageDone"`
+	PhysicalDamageDoneToChampions int `json:"physicalDamageDoneToChampions"`
+	PhysicalDamageTaken           int `json:"physicalDamageTaken"`
+	TotalDamageDone               int `json:"totalDamageDone"`
+	TotalDamageDoneToChampions    int `json:"totalDamageDoneToChampions"`
+	TotalDamageTaken              int `json:"totalDamageTaken"`
+	TrueDamageDone                int `json:"trueDamageDone"`
+	TrueDamageDoneToChampions     int `json:"trueDamageDoneToChampions"`
+	TrueDamageTaken               int `json:"trueDamageTaken"`
+}
+
+type Position struct {
+	X int `json:"x"`
+	Y int `json:"y"`
+}
+
+type Timeline struct {
+	Metadata MetadataTimeLine `json:"metadata"`
+	Info     InfoTimeLine     `json:"info"`
 }
