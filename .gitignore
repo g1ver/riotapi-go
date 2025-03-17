@@ -1,0 +1,6 @@
+.DS_Store
+.env
+
+# personal testing files
+main.go
+main
