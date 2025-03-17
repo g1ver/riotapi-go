@@ -1,3 +1,7 @@
 package models
 
-// champion.go is a generated Go file from the directory champion.go
+type ChampionInfo struct {
+	MaxNewPlayerLevel            int   `json:"maxNewPlayerLevel"`
+	FreeChampionIdsForNewPlayers []int `json:"freeChampionIdsForNewPlayers"`
+	FreeChampionIds              []int `json:"freeChampionIds"`
+}
