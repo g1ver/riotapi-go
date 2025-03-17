@@ -11,7 +11,7 @@ func (c *Client) GetClashPlayersByPUUID(puuid string) ([]models.Player, error) {
 	url := fmt.Sprintf("%s/lol/clash/v1/players/by-puuid/%s", c.baseUrl, puuid)
 
 	var ps []models.Player
-	if err := c.Get(url, ps); err != nil {
+	if err := c.Get(url, &ps); err != nil {
 		return nil, fmt.Errorf("failed to get player by puuid: %w", err)
 	}
 
@@ -35,7 +35,7 @@ func (c *Client) GetClashTournaments() ([]models.Tournament, error) {
 	url := fmt.Sprintf("%s/lol/clash/v1/tournaments", c.baseUrl)
 
 	var ts []models.Tournament
-	if err := c.Get(url, ts); err != nil {
+	if err := c.Get(url, &ts); err != nil {
 		return nil, fmt.Errorf("failed to get team by id: %w", err)
 	}
 
