@@ -11,8 +11,13 @@ func (c *Client) GetChampionRotations() (*models.ChampionInfo, error) {
 	url := fmt.Sprintf("%s/lol/platform/v3/champion-rotations", c.baseUrl)
 
 	var ci models.ChampionInfo
-	if err := c.Get(url, &ci); err != nil {
-		return nil, fmt.Errorf("failed to get champion rotations: %w", err)
+	resp, err := c.Get(url, &ci)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get champion rotations",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &ci, nil

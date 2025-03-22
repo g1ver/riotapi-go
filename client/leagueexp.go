@@ -13,8 +13,13 @@ func (c *Client) GetAllLeagueExpEntries(queue string, tier string, division stri
 	url := fmt.Sprintf("%s/lol/league-exp/v4/entries/%s/%s/%s?page=%d", c.baseUrl, queue, tier, division, page)
 
 	var les []models.LeagueEntry
-	if err := c.Get(url, &les); err != nil {
-		return nil, fmt.Errorf("failed to get league entries: %w", err)
+	resp, err := c.Get(url, &les)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get league entries",
+			Headers:    resp.Header,
+		}
 	}
 
 	return les, nil

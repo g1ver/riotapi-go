@@ -44,8 +44,13 @@ func (c *Client) GetMatchIDsByPUUID(puuid string, params models.GetMatchIDsByPUU
 	u.RawQuery = q.Encode()
 
 	var matchIDs []string
-	if err := c.Get(u.String(), &matchIDs); err != nil {
-		return nil, fmt.Errorf("failed to get match IDs: %w", err)
+	resp, err := c.Get(u.String(), &matchIDs)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get match IDs",
+			Headers:    resp.Header,
+		}
 	}
 
 	return matchIDs, nil
@@ -56,8 +61,13 @@ func (c *Client) GetMatchByMatchID(matchId string) (*models.Match, error) {
 	u := fmt.Sprintf("%s/lol/match/v5/matches/%s", c.routingServerUrl, matchId)
 
 	var match models.Match
-	if err := c.Get(u, &match); err != nil {
-		return nil, fmt.Errorf("failed to get match by ID: %w", err)
+	resp, err := c.Get(u, &match)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get match by ID",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &match, nil
@@ -68,8 +78,13 @@ func (c *Client) GetMatchTimelineByMatchID(matchId string) (*models.Timeline, er
 	u := fmt.Sprintf("%s/lol/match/v5/matches/%s/timeline", c.routingServerUrl, matchId)
 
 	var mtl models.Timeline
-	if err := c.Get(u, &mtl); err != nil {
-		return nil, fmt.Errorf("failed to get match timeline by ID: %w", err)
+	resp, err := c.Get(u, &mtl)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get match timeline by ID",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &mtl, nil

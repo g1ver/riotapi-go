@@ -73,27 +73,27 @@ func NewClient(apiKey string, region string) (*Client, error) {
 	}, nil
 }
 
-func (c *Client) Get(url string, result any) error {
+func (c *Client) Get(url string, result any) (*http.Response, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
+		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 
 	req.Header.Add("X-Riot-Token", c.apiKey)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("failed to send request: %w", err)
+		return nil, fmt.Errorf("failed to send request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("API request failed with status code: %d", resp.StatusCode)
+		return resp, fmt.Errorf("API error: status=%d", resp.StatusCode)
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(result); err != nil {
-		return fmt.Errorf("failed to decode response: %w", err)
+		return resp, fmt.Errorf("failed to decode response: %w", err)
 	}
 
-	return nil
+	return resp, nil
 }

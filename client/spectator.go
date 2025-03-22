@@ -11,8 +11,13 @@ func (c *Client) GetActiveGameInfoByPUUID(puuid string) (*models.CurrentGameInfo
 	u := fmt.Sprintf("%s/lol/spectator/v5/active-games/by-summoner/%s", c.baseUrl, puuid)
 
 	var gameInfo models.CurrentGameInfo
-	if err := c.Get(u, &gameInfo); err != nil {
-		return nil, err
+	resp, err := c.Get(u, &gameInfo)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get active game info by puuid",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &gameInfo, nil
@@ -23,8 +28,13 @@ func (c *Client) GetFeaturedGames() (*models.FeaturedGames, error) {
 	u := fmt.Sprintf("%s/lol/spectator/v5/featured-games", c.baseUrl)
 
 	var featuredGames models.FeaturedGames
-	if err := c.Get(u, &featuredGames); err != nil {
-		return nil, err
+	resp, err := c.Get(u, &featuredGames)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get featured games",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &featuredGames, nil

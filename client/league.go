@@ -11,8 +11,13 @@ func (c *Client) GetChallengerLeagueByQueue(queue string) (*models.LeagueList, e
 	url := fmt.Sprintf("%s/lol/league/v4/challengerleagues/by-queue/%s", c.baseUrl, queue)
 
 	var ll models.LeagueList
-	if err := c.Get(url, &ll); err != nil {
-		return nil, fmt.Errorf("failed to get challenger league by queue: %w", err)
+	resp, err := c.Get(url, &ll)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get challenger league by queue",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &ll, nil
@@ -23,8 +28,13 @@ func (c *Client) GetAllLeagueEntriesByPUUID(puuid string) ([]models.LeagueEntry,
 	url := fmt.Sprintf("%s/lol/league/v4/entries/by-puuid/%s", c.baseUrl, puuid)
 
 	var le []models.LeagueEntry
-	if err := c.Get(url, &le); err != nil {
-		return nil, fmt.Errorf("failed to get all league entries by puuid: %w", err)
+	resp, err := c.Get(url, &le)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get all league entries by puuid",
+			Headers:    resp.Header,
+		}
 	}
 
 	return le, nil
@@ -35,8 +45,13 @@ func (c *Client) GetAllLeagueEntriesBySummonerID(summonerID string) ([]models.Le
 	url := fmt.Sprintf("%s/lol/league/v4/entries/by-summoner/%s", c.baseUrl, summonerID)
 
 	var le []models.LeagueEntry
-	if err := c.Get(url, &le); err != nil {
-		return nil, fmt.Errorf("failed to get all league entries by summoner id: %w", err)
+	resp, err := c.Get(url, &le)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get all league entries by summoner id",
+			Headers:    resp.Header,
+		}
 	}
 
 	return le, nil
@@ -47,8 +62,13 @@ func (c *Client) GetAllLeagueEntries(queue string, tier string, division string,
 	url := fmt.Sprintf("%s/lol/league/v4/entries/%s/%s/%s?page=%d", c.baseUrl, queue, tier, division, page)
 
 	var les []models.LeagueEntry
-	if err := c.Get(url, &les); err != nil {
-		return nil, fmt.Errorf("failed to get all league entries: %w", err)
+	resp, err := c.Get(url, &les)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get all league entries",
+			Headers:    resp.Header,
+		}
 	}
 
 	return les, nil
@@ -59,8 +79,13 @@ func (c *Client) GetGrandmasterLeagueByQueue(queue string) (*models.LeagueList, 
 	url := fmt.Sprintf("%s/lol/league/v4/grandmasterleagues/by-queue/%s", c.baseUrl, queue)
 
 	var ll models.LeagueList
-	if err := c.Get(url, &ll); err != nil {
-		return nil, fmt.Errorf("failed to get grandmaster league by queue: %w", err)
+	resp, err := c.Get(url, &ll)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get grandmaster league by queue",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &ll, nil
@@ -71,8 +96,13 @@ func (c *Client) GetLeagueByID(leagueID string) (*models.LeagueList, error) {
 	url := fmt.Sprintf("%s/lol/league/v4/leagues/%s", c.baseUrl, leagueID)
 
 	var ll models.LeagueList
-	if err := c.Get(url, &ll); err != nil {
-		return nil, fmt.Errorf("failed to get league by ID: %w", err)
+	resp, err := c.Get(url, &ll)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get league by ID",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &ll, nil
@@ -83,8 +113,13 @@ func (c *Client) GetMasterLeagueByQueue(queue string) (*models.LeagueList, error
 	url := fmt.Sprintf("%s/lol/league/v4/masterleagues/by-queue/%s", c.baseUrl, queue)
 
 	var ll models.LeagueList
-	if err := c.Get(url, &ll); err != nil {
-		return nil, fmt.Errorf("failed to get master league by queue: %w", err)
+	resp, err := c.Get(url, &ll)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get master league by queue",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &ll, nil

@@ -11,8 +11,13 @@ func (c *Client) GetAllChampionMasteries(puuid string) ([]models.ChampionMastery
 	url := fmt.Sprintf("%s/lol/champion-mastery/v4/champion-masteries/by-puuid/%s", c.baseUrl, puuid)
 
 	var cms []models.ChampionMastery
-	if err := c.Get(url, &cms); err != nil {
-		return nil, fmt.Errorf("failed to get champion masteries: %w", err)
+	resp, err := c.Get(url, &cms)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get champion masteries",
+			Headers:    resp.Header,
+		}
 	}
 
 	return cms, nil
@@ -23,8 +28,13 @@ func (c *Client) GetChampionMastery(puuid string, championId int) (*models.Champ
 	url := fmt.Sprintf("%s/lol/champion-mastery/v4/champion-masteries/by-puuid/%s/by-champion/%d", c.baseUrl, puuid, championId)
 
 	var cm models.ChampionMastery
-	if err := c.Get(url, &cm); err != nil {
-		return nil, fmt.Errorf("failed to get champion mastery: %w", err)
+	resp, err := c.Get(url, &cm)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get champion mastery",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &cm, nil
@@ -32,11 +42,16 @@ func (c *Client) GetChampionMastery(puuid string, championId int) (*models.Champ
 
 // Get specified number of top champion mastery entries sorted by number of champion points descending.
 func (c *Client) GetTopChampionMasteries(puuid string, count int) ([]models.ChampionMastery, error) {
-	url := fmt.Sprintf("%s/lol/champion-mastery/v4/champion-masteries/by-puuid/%s/top?=%d", c.baseUrl, puuid, count)
+	url := fmt.Sprintf("%s/lol/champion-mastery/v4/champion-masteries/by-puuid/%s/top?count=%d", c.baseUrl, puuid, count)
 
 	var cms []models.ChampionMastery
-	if err := c.Get(url, &cms); err != nil {
-		return nil, fmt.Errorf("failed to get champion masteries: %w", err)
+	resp, err := c.Get(url, &cms)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get champion masteries",
+			Headers:    resp.Header,
+		}
 	}
 
 	return cms, nil
@@ -47,8 +62,13 @@ func (c *Client) GetMasteryScore(puuid string) (int, error) {
 	url := fmt.Sprintf("%s/lol/champion-mastery/v4/scores/by-puuid/%s", c.baseUrl, puuid)
 
 	var ms int
-	if err := c.Get(url, &ms); err != nil {
-		return -1, fmt.Errorf("failed to get champion masteries: %w", err)
+	resp, err := c.Get(url, &ms)
+	if err != nil {
+		return -1, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get mastery score",
+			Headers:    resp.Header,
+		}
 	}
 
 	return ms, nil

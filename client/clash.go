@@ -11,8 +11,13 @@ func (c *Client) GetClashPlayersByPUUID(puuid string) ([]models.Player, error) {
 	url := fmt.Sprintf("%s/lol/clash/v1/players/by-puuid/%s", c.baseUrl, puuid)
 
 	var ps []models.Player
-	if err := c.Get(url, &ps); err != nil {
-		return nil, fmt.Errorf("failed to get player by puuid: %w", err)
+	resp, err := c.Get(url, &ps)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get player by puuid",
+			Headers:    resp.Header,
+		}
 	}
 
 	return ps, nil
@@ -23,8 +28,13 @@ func (c *Client) GetClashTeamByID(teamId string) (*models.ClashTeam, error) {
 	url := fmt.Sprintf("%s/lol/clash/v1/teams/%s", c.baseUrl, teamId)
 
 	var t models.ClashTeam
-	if err := c.Get(url, &t); err != nil {
-		return nil, fmt.Errorf("failed to get team by id: %w", err)
+	resp, err := c.Get(url, &t)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get team by id",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &t, nil
@@ -35,8 +45,13 @@ func (c *Client) GetClashTournaments() ([]models.Tournament, error) {
 	url := fmt.Sprintf("%s/lol/clash/v1/tournaments", c.baseUrl)
 
 	var ts []models.Tournament
-	if err := c.Get(url, &ts); err != nil {
-		return nil, fmt.Errorf("failed to get team by id: %w", err)
+	resp, err := c.Get(url, &ts)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get tournaments",
+			Headers:    resp.Header,
+		}
 	}
 
 	return ts, nil
@@ -47,8 +62,13 @@ func (c *Client) GetClashTournamentByTeamID(teamId string) (*models.Tournament, 
 	url := fmt.Sprintf("%s/lol/clash/v1/tournaments/by-team/%s", c.baseUrl, teamId)
 
 	var t models.Tournament
-	if err := c.Get(url, t); err != nil {
-		return nil, fmt.Errorf("failed to get team by id: %w", err)
+	resp, err := c.Get(url, &t)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get tournament by team id",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &t, nil
@@ -59,8 +79,13 @@ func (c *Client) GetClashTournamentByID(tournamentId string) (*models.Tournament
 	url := fmt.Sprintf("%s/lol/clash/v1/tournaments/%s", c.baseUrl, tournamentId)
 
 	var t models.Tournament
-	if err := c.Get(url, t); err != nil {
-		return nil, fmt.Errorf("failed to get team by id: %w", err)
+	resp, err := c.Get(url, &t)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get tournament by id",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &t, nil

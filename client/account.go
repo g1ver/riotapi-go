@@ -11,10 +11,14 @@ func (c *Client) GetAccountByPUUID(puuid string) (*models.Account, error) {
 	url := fmt.Sprintf("%s/riot/account/v1/accounts/by-puuid/%s", c.routingServerUrl, puuid)
 
 	var account models.Account
-	if err := c.Get(url, &account); err != nil {
-		return nil, fmt.Errorf("failed to get summoner by name: %w", err)
+	resp, err := c.Get(url, &account)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get account by PUUID",
+			Headers:    resp.Header,
+		}
 	}
-
 	return &account, nil
 }
 
@@ -23,8 +27,13 @@ func (c *Client) GetAccountByRiotID(gameName string, tagLine string) (*models.Ac
 	url := fmt.Sprintf("%s/riot/account/v1/accounts/by-riot-id/%s/%s", c.routingServerUrl, gameName, tagLine)
 
 	var account models.Account
-	if err := c.Get(url, &account); err != nil {
-		return nil, fmt.Errorf("failed to get summoner by riot id: %w", err)
+	resp, err := c.Get(url, &account)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get account by Riot ID",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &account, nil

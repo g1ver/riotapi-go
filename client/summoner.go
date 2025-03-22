@@ -11,8 +11,13 @@ func (c *Client) GetSummonerByAccountID(accountId string) (*models.Summoner, err
 	url := fmt.Sprintf("%s/lol/summoner/v4/summoners/by-account/%s", c.baseUrl, accountId)
 
 	var summoner models.Summoner
-	if err := c.Get(url, &summoner); err != nil {
-		return nil, err
+	resp, err := c.Get(url, &summoner)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get summoner by account ID",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &summoner, nil
@@ -23,8 +28,13 @@ func (c *Client) GetSummonerByPUUID(puuid string) (*models.Summoner, error) {
 	url := fmt.Sprintf("%s/lol/summoner/v4/summoners/by-puuid/%s", c.baseUrl, puuid)
 
 	var summoner models.Summoner
-	if err := c.Get(url, &summoner); err != nil {
-		return nil, err
+	resp, err := c.Get(url, &summoner)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get summoner by PUUID",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &summoner, nil
@@ -35,8 +45,13 @@ func (c *Client) GetSummonerBySummonerID(summonerId string) (*models.Summoner, e
 	url := fmt.Sprintf("%s/lol/summoner/v4/summoners/%s", c.baseUrl, summonerId)
 
 	var summoner models.Summoner
-	if err := c.Get(url, &summoner); err != nil {
-		return nil, err
+	resp, err := c.Get(url, &summoner)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get summoner by summoner ID",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &summoner, nil

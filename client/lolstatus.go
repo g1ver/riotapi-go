@@ -11,8 +11,13 @@ func (c *Client) GetLeagueStatus() (*models.PlatformData, error) {
 	url := fmt.Sprintf("%s/lol/status/v4/platform-data", c.baseUrl)
 
 	var pd models.PlatformData
-	if err := c.Get(url, &pd); err != nil {
-		return nil, fmt.Errorf("failed to get league status: %w", err)
+	resp, err := c.Get(url, &pd)
+	if err != nil {
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Message:    "failed to get league status",
+			Headers:    resp.Header,
+		}
 	}
 
 	return &pd, nil
